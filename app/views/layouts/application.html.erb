@@ -1,18 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Msgo</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <title>MSGo Payroll</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;800&display=swap" rel="stylesheet">
+    <%= javascript_pack_tag 'react_root', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= render 'shared/header' %>
-    <div class="min-h-screen bg-gray-100">
-      <%= yield %>
-    <div>
+    <%= yield %>
   </body>
 </html>
