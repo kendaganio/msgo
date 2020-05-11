@@ -56,7 +56,25 @@ class Api::V1::ContractorsController < ApiController
   protected
 
   def contractor_params
-    params.require(:contractor).permit(:first_name, :last_name, :daily_rate)
+    params.require(:contractor).permit(
+      :address,
+      :birthday,
+      :contact_number,
+      :emergency_contact,
+      :emergency_contact_number,
+      :emergency_contact_relation,
+      :first_name,
+      :hire_date,
+      :hourly_rate,
+      :job_title,
+      :last_name,
+      :pagibig,
+      :philhealth,
+      :middle_name,
+      :sss,
+      :status,
+      :tin
+    )
   end
 
   def attendance_params

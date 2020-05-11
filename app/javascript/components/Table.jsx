@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import { useTable, usePagination } from "react-table";
+import { useTable } from "react-table";
 import {
   Box,
   Flex,
@@ -27,22 +27,24 @@ const Td = (props) => (
     {...props}
   />
 );
-const Th = (props) => (
-  <Box
-    as="th"
-    py="3"
-    px="4"
-    borderBottomWidth="1px"
-    borderColor="gray.200"
-    fontWeight="medium"
-    bg="gray.200"
-    color="gray.600"
-    textTransform="uppercase"
-    fontSize="xs"
-    isTruncated
-    {...props}
-  />
-);
+const Th = (props) => {
+  return (
+    <Box
+      as="th"
+      py="3"
+      px="4"
+      borderBottomWidth="1px"
+      borderColor="gray.200"
+      fontWeight="medium"
+      bg="gray.200"
+      color="gray.600"
+      textTransform="uppercase"
+      fontSize="xs"
+      isTruncated
+      {...props}
+    />
+  );
+};
 
 const Tr = (props) => (
   <PseudoBox
@@ -70,6 +72,7 @@ const Table = ({
     headerGroups,
     prepareRow,
     rows,
+    state,
   } = useTable({
     columns,
     data,
@@ -85,19 +88,19 @@ const Table = ({
         borderWidth="1px"
         borderColor="gray.200"
       >
-        <Box as="table" minW="full" {...props} {...getTableProps}>
+        <Box as="table" minW="full" {...props} {...getTableProps()}>
           <Thead>
-            <>
-              {headerGroups.map((headerGroup) => (
-                <Tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
+            {headerGroups.map((headerGroup) => (
+              <Tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => {
+                  return (
                     <Th {...column.getHeaderProps()}>
                       {column.render("Header")}
                     </Th>
-                  ))}
-                </Tr>
-              ))}
-            </>
+                  );
+                })}
+              </Tr>
+            ))}
           </Thead>
           <Tbody {...getTableBodyProps()}>
             {rows.map((row, i) => {

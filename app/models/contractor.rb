@@ -6,6 +6,26 @@ class Contractor < ApplicationRecord
 
   has_many :attendances
 
+  enum status: %i[active inactive ulol]
+
+  before_create :generate_employee_number
+
+  def generate_employee_number
+    current_year = Time.now.year
+    last =
+      Contractor.where("employee_number LIKE '?%'", current_year).order(
+        employee_number: :asc
+      ).last
+
+    if last
+      employee_number = last.employee_number.to_i + 1
+    else
+      employee_number = "#{current_year}#{'1'.rjust(5, '0')}"
+    end
+
+    self.employee_number = employee_number
+  end
+
   def full_name
     [first_name, last_name].join(' ')
   end

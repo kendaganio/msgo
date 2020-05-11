@@ -1,6 +1,12 @@
 import React from "react";
 import * as Yup from "yup";
-import { differenceInHours, isAfter, addMinutes, set } from "date-fns";
+import {
+  differenceInHours,
+  differenceInMinutes,
+  isAfter,
+  addMinutes,
+  set,
+} from "date-fns";
 import { Box, Button, IconButton, Flex, Text } from "@chakra-ui/core";
 import { Formik, Form, FieldArray } from "formik";
 
@@ -25,15 +31,22 @@ const BulkAttendance = ({ contractorId, ...props }) => {
   });
 
   return (
-    <Box p="4" bg="gray.50" rounded="lg">
+    <Box m="4" borderWidth="1px" p="2" bg="gray.50" rounded="lg">
       <Formik
         initialValues={{
           attendances: [
             {
-              time_in_at: set(new Date(), { hours: 7, minutes: 0, seconds: 0 }),
+              time_in_at: set(new Date(), {
+                hours: 7,
+                minutes: 0,
+                seconds: 0,
+                milliseconds: 0,
+              }),
               time_out_at: set(new Date(), {
                 hours: 16,
                 minutes: 0,
+                seconds: 0,
+                milliseconds: 0,
               }),
             },
           ],
@@ -60,30 +73,13 @@ const BulkAttendance = ({ contractorId, ...props }) => {
                 {(arrayHelpers) => {
                   return (
                     <>
-                      <Flex justify="flex-end">
-                        <Button
-                          leftIcon="add"
-                          variantColor="blue"
-                          variant="outline"
-                          size="sm"
-                          onClick={() =>
-                            arrayHelpers.push({
-                              time_in_at: set(new Date(), {
-                                hours: 7,
-                                minutes: 0,
-                              }),
-                              time_out_at: set(new Date(), {
-                                hours: 16,
-                                minutes: 0,
-                                seconds: 30,
-                              }),
-                            })
-                          }
-                        >
-                          Add
-                        </Button>
-                      </Flex>
-                      <Box as="table">
+                      <Flex justify="flex-end"></Flex>
+                      <Box
+                        as="table"
+                        borderWidth="1px"
+                        minW="full"
+                        bg="gray.50"
+                      >
                         <Tbody>
                           {attendances.map((attendance, index) => (
                             <Tr key={`att-${index}`}>
@@ -96,8 +92,8 @@ const BulkAttendance = ({ contractorId, ...props }) => {
                               <Td>
                                 <Text>
                                   {differenceInHours(
-                                    addMinutes(attendance.time_out_at, -1),
-                                    addMinutes(attendance.time_in_at, 2)
+                                    attendance.time_out_at,
+                                    attendance.time_in_at
                                   )}
                                 </Text>
                               </Td>
@@ -114,11 +110,35 @@ const BulkAttendance = ({ contractorId, ...props }) => {
                           ))}
                         </Tbody>
                       </Box>
+
+                      <Button type="submit" variantColor="blue" size="sm">
+                        Save
+                      </Button>
+                      <Button
+                        leftIcon="add"
+                        variantColor="blue"
+                        variant="outline"
+                        size="sm"
+                        onClick={() =>
+                          arrayHelpers.push({
+                            time_in_at: set(new Date(), {
+                              hours: 7,
+                              minutes: 0,
+                            }),
+                            time_out_at: set(new Date(), {
+                              hours: 16,
+                              minutes: 0,
+                              seconds: 30,
+                            }),
+                          })
+                        }
+                      >
+                        Add More
+                      </Button>
                     </>
                   );
                 }}
               </FieldArray>
-              <Button type="submit">submit</Button>
             </Form>
           );
         }}

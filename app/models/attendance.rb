@@ -4,7 +4,9 @@ class Attendance < ApplicationRecord
   default_scope { order(time_in_at: :desc) }
 
   def hours_worked
-    ((time_out_at - time_in_at) / 60 / 60).ceil - 1.0
+    hrs = ((time_out_at - time_in_at) / 60 / 60).floor
+    hrs = hrs - 1 if hrs > 8
+    hrs
   end
 
   def overtime_hours

@@ -1,5 +1,6 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { parseISO, format } from "date-fns";
 import { useQuery } from "react-query";
 
 import AttendanceTable from "../Attendance/AttendanceTable";
@@ -59,9 +60,9 @@ const Show = (props) => {
             {contractor.job_title || "???"}
           </Heading>
           <Text color="gray.500" fontSize="sm" mt="1">
-            Employee No: 123123212131
+            Employee No.: {contractor.employee_number}
             <br />
-            Employee Since: 05/22/2020
+            Start Date: {format(parseISO(contractor.hire_date), "MMMM d, yyyy")}
           </Text>
         </Stack>
         <Stack
@@ -69,8 +70,13 @@ const Show = (props) => {
           mt={{ base: 4, md: 0 }}
           minW={{ base: "full", md: "auto" }}
         >
-          <Button variantColor="blue" leftIcon="add">
-            Bulk Add Attendance
+          <Button
+            as={Link}
+            to={`/contractors/${contractor.id}/edit`}
+            variantColor="blue"
+            leftIcon="edit"
+          >
+            Edit Contractor
           </Button>
           <Button>Another Action</Button>
         </Stack>

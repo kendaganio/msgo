@@ -15,7 +15,7 @@ describe '/api/v1/contractors' do
   describe 'create' do
     context 'invalid params' do
       before do
-        params = { contractor: { first_name: 'lol' } }
+        params = { contractor: { first_name: 'lol', job_title: 'sandblaster' } }
         post '/api/v1/contractors', params: params, headers: auth_header
       end
 
@@ -25,7 +25,7 @@ describe '/api/v1/contractors' do
 
       it 'return the correct errors' do
         expect(json[:errors]).to include(
-          "last_name": ["can't be blank"], "daily_rate": ["can't be blank"]
+          "last_name": ["can't be blank"], "hourly_rate": ["can't be blank"]
         )
       end
     end
@@ -33,14 +33,22 @@ describe '/api/v1/contractors' do
     context 'valid params' do
       before do
         params = {
-          contractor: { first_name: 'Ken', last_name: 'D', daily_rate: 1000 }
+          contractor: {
+            first_name: 'Ken',
+            last_name: 'D',
+            hourly_rate: 100,
+            job_title: 'sandblaster'
+          }
         }
         post '/api/v1/contractors', params: params, headers: auth_header
       end
 
       it 'returns the created contractor' do
         expect(json).to include(
-          first_name: 'Ken', last_name: 'D', full_name: 'Ken D'
+          first_name: 'Ken',
+          last_name: 'D',
+          full_name: 'Ken D',
+          job_title: 'sandblaster'
         )
       end
     end
@@ -53,7 +61,7 @@ describe '/api/v1/contractors' do
       put "/api/v1/contractors/#{contractor.id}",
           params: {
             contractor: {
-              last_name: 'newlast', first_name: 'newfirst', daily_rate: 123
+              last_name: 'newlast', first_name: 'newfirst', hourly_rate: 123
             }
           },
           headers: auth_header
@@ -61,7 +69,7 @@ describe '/api/v1/contractors' do
 
     it 'updates contractor' do
       expect(contractor.reload).to have_attributes(
-        last_name: 'newlast', first_name: 'newfirst', daily_rate: 123.0
+        last_name: 'newlast', first_name: 'newfirst', hourly_rate: 123.0
       )
     end
   end

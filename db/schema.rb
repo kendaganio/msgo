@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_08_095604) do
+ActiveRecord::Schema.define(version: 2020_05_10_013144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,10 +31,20 @@ ActiveRecord::Schema.define(version: 2020_05_08_095604) do
     t.integer "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "employee_no"
     t.date "hire_date"
     t.string "job_title"
     t.float "hourly_rate"
+    t.string "middle_name"
+    t.string "contact_number"
+    t.string "sss"
+    t.string "philhealth"
+    t.string "pagibig"
+    t.string "tin"
+    t.string "emergency_contact"
+    t.string "emergency_contact_number"
+    t.string "emergency_contact_relation"
+    t.date "birthday"
+    t.string "employee_number"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -78,6 +88,19 @@ ActiveRecord::Schema.define(version: 2020_05_08_095604) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
+  end
+
+  create_table "payouts", force: :cascade do |t|
+    t.datetime "paid_at"
+    t.decimal "amount", precision: 8, scale: 2
+    t.boolean "cash_advance"
+    t.text "notes"
+    t.bigint "payroll_id"
+    t.bigint "contractor_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["contractor_id"], name: "index_payouts_on_contractor_id"
+    t.index ["payroll_id"], name: "index_payouts_on_payroll_id"
   end
 
   create_table "payrolls", force: :cascade do |t|

@@ -26,12 +26,11 @@ const MenuItems = ({ children, ...props }) => (
 );
 
 const Header = (props) => {
+  const user = useUser();
+  const { logout } = useAuth();
+
   const [show, setShow] = React.useState(false);
   const handleToggle = () => setShow(!show);
-  const { logout } = useAuth();
-  const user = useUser();
-
-  console.log(user);
 
   return (
     <Flex

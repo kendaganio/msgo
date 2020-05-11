@@ -43,7 +43,6 @@ const DateTimePicker = ({
         return (
           <FormControl isInvalid={meta.error && meta.touched}>
             {label && <FormLabel>{label}</FormLabel>}
-            <FormLabel>{formatISO(field.value)}</FormLabel>
             <Flex>
               <Input
                 type="date"

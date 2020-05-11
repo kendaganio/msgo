@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { usePaginatedQuery } from "react-query";
 import { Link, useRouteMatch } from "react-router-dom";
-import { Avatar, Button, Box, Flex, Text } from "@chakra-ui/core";
+import { Avatar, Button, Badge, Box, Flex, Text } from "@chakra-ui/core";
 
 import PageHeader from "../../components/PageHeader";
 import { fetchCollection } from "../../Api";
@@ -58,22 +58,39 @@ const List = (props) => {
                     showBorder
                   />
                   <Flex direction="column">
-                    <Text
+                    <Link
+                      as={Text}
+                      to={`/contractors/${row.original.id}`}
                       fontFamily="heading"
                       fontWeight="500"
                       color="gray.700"
-                      lineHeight="1"
                     >
                       {row.original.full_name}
-                    </Text>
+                    </Link>
                     <Text fontSize="sm" color="gray.500">
                       {row.original.job_title}
                     </Text>
                   </Flex>
                 </Flex>
               ),
+              canSort: true,
             },
-            { Header: "Hourly Rate", accessor: "hourly_rate" },
+            {
+              Header: "Daily Rate",
+              Cell: ({ row }) => row.original.hourly_rate * 8,
+            },
+            {
+              Header: "Status",
+              Cell: ({ row }) => (
+                <Badge
+                  variantColor={
+                    row.original.status === "inactive" ? "red" : "green"
+                  }
+                >
+                  {row.original.status}
+                </Badge>
+              ),
+            },
             {
               id: "actions",
               collapse: true,
@@ -84,12 +101,21 @@ const List = (props) => {
                     <Button
                       as={Link}
                       to={`${url}/${row.original.id}`}
-                      rightIcon="chevron-right"
                       variantColor="orange"
                       variant="link"
                       size="sm"
+                      mr="2"
                     >
                       View
+                    </Button>
+                    <Button
+                      as={Link}
+                      to={`${url}/${row.original.id}/edit`}
+                      variantColor="blue"
+                      variant="link"
+                      size="sm"
+                    >
+                      Edit
                     </Button>
                   </Flex>
                 );

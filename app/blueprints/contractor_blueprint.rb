@@ -5,10 +5,17 @@ class ContractorBlueprint < Blueprinter::Base
          :last_name,
          :full_name,
          :job_title,
-         :employee_no,
+         :employee_number,
          :hourly_rate,
          :hire_date,
-         :image_url
+         :image_url,
+         :status,
+         :address,
+         :birthday,
+         :contact_number,
+         :emergency_contact,
+         :emergency_contact_relation,
+         :emergency_contact_number
 
   view :with_associations do
     association :attendances, blueprint: AttendanceBlueprint
