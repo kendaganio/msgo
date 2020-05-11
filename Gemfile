@@ -19,6 +19,7 @@ gem 'activeadmin'
 gem 'blueprinter'
 gem 'oj'
 gem 'kaminari'
+gem 'rollbar'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
