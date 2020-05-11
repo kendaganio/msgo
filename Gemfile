@@ -15,6 +15,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'devise'
 gem 'doorkeeper'
 gem 'doorkeeper-jwt'
+gem 'activeadmin'
 gem 'blueprinter'
 gem 'oj'
 gem 'kaminari'
