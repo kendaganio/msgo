@@ -60,9 +60,11 @@ const Show = (props) => {
             {contractor.job_title || "???"}
           </Heading>
           <Text color="gray.500" fontSize="sm" mt="1">
-            Employee No.: {contractor.employee_number}
+            Employee No: {contractor.employee_number}
             <br />
-            Start Date: {format(parseISO(contractor.hire_date), "MMMM d, yyyy")}
+            Start Date:{" "}
+            {contractor.hire_date &&
+              format(parseISO(contractor.hire_date), "MMMM d, yyyy")}
           </Text>
         </Stack>
         <Stack

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
-import { Button, Box, Flex } from "@chakra-ui/core";
+import { Button, Box, Flex, Heading } from "@chakra-ui/core";
 
 import PageHeader from "../../components/PageHeader";
 import { fetchPayrolls } from "../../Api";
@@ -35,18 +35,19 @@ const List = (props) => {
       <Box p="4">
         <Table
           columns={[
-            { Header: "Name", accessor: "name" },
-            { Header: "From", accessor: "start_date" },
-            { Header: "To", accessor: "end_date" },
+            { id: "name", header: "Name", accessor: "name" },
+            { id: "start_date", header: "From", accessor: "start_date" },
+            { id: "end_date", header: "To", accessor: "end_date" },
             {
-              Header: () => null,
               id: "actions",
-              Cell: ({ row, data }) => {
+              header: () => null,
+              cell: ({ row, ...props }) => {
+                console.log(props);
                 return (
                   <Flex justify="flex-end">
                     <Button
                       as={Link}
-                      to={`/payrolls/${row.original.id}`}
+                      to={`/payrolls/${row.id}`}
                       variantColor="orange"
                       variant="link"
                       size="sm"

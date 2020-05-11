@@ -10,18 +10,23 @@ import { Table } from "../../components/Table";
 const List = (props) => {
   let { url } = useRouteMatch();
   const [currentPage, setPage] = useState(1);
+  const [sort, setSort] = useState({});
 
   const {
     status,
     resolvedData,
-    latestData,
     error,
+    refetch,
     isFetching,
   } = usePaginatedQuery(
-    ["contractors", { page: currentPage }],
-    fetchCollection
+    ["contractors", { page: currentPage, order: sort }],
+    fetchCollection,
+    {
+      retry: 2,
+    }
   );
 
+  console.log(resolvedData);
   if (status === "loading") {
     return <h1>Loading</h1>;
   }
@@ -48,59 +53,55 @@ const List = (props) => {
         <Table
           columns={[
             {
-              Header: "Contractor Info",
-              Cell: ({ row }) => (
+              id: "last_name",
+              header: "Contractor Info",
+              cell: ({ row }) => (
                 <Flex align="center">
-                  <Avatar
-                    src={row.original.image_url}
-                    size="md"
-                    mr="3"
-                    showBorder
-                  />
+                  <Avatar src={row.image_url} size="md" mr="3" showBorder />
                   <Flex direction="column">
                     <Link
                       as={Text}
-                      to={`/contractors/${row.original.id}`}
+                      to={`/contractors/${row.id}`}
                       fontFamily="heading"
                       fontWeight="500"
                       color="gray.700"
                     >
-                      {row.original.full_name}
+                      {row.full_name}
                     </Link>
                     <Text fontSize="sm" color="gray.500">
-                      {row.original.job_title}
+                      {row.job_title}
                     </Text>
                   </Flex>
                 </Flex>
               ),
-              canSort: true,
+              sortable: true,
             },
             {
-              Header: "Daily Rate",
-              Cell: ({ row }) => row.original.hourly_rate * 8,
+              id: "hourly_rate",
+              header: "Daily Rate",
+              cell: ({ row }) => row.hourly_rate * 8,
+              sortable: true,
             },
             {
-              Header: "Status",
-              Cell: ({ row }) => (
+              header: "Status",
+              cell: ({ row }) => (
                 <Badge
-                  variantColor={
-                    row.original.status === "inactive" ? "red" : "green"
-                  }
+                  variantColor={row.status === "inactive" ? "red" : "green"}
                 >
-                  {row.original.status}
+                  {row.status}
                 </Badge>
               ),
+              sortable: true,
             },
             {
               id: "actions",
               collapse: true,
-              Header: () => null,
-              Cell: ({ row, data }) => {
+              cell: ({ row }) => {
                 return (
                   <Flex justify="flex-end">
                     <Button
                       as={Link}
-                      to={`${url}/${row.original.id}`}
+                      to={`${url}/${row.id}`}
                       variantColor="orange"
                       variant="link"
                       size="sm"
@@ -110,7 +111,7 @@ const List = (props) => {
                     </Button>
                     <Button
                       as={Link}
-                      to={`${url}/${row.original.id}/edit`}
+                      to={`${url}/${row.id}/edit`}
                       variantColor="blue"
                       variant="link"
                       size="sm"
@@ -128,6 +129,9 @@ const List = (props) => {
             setPage,
             currentPage,
             pageCount: 100,
+          }}
+          onStateChange={(state) => {
+            setSort(state.sort);
           }}
         />
       </Box>

@@ -1,5 +1,6 @@
 import React from "react";
 import * as Yup from "yup";
+import omitBy from "lodash-es/omitBy";
 import { Redirect, Link } from "react-router-dom";
 import { Formik, Form } from "formik";
 import {
@@ -20,6 +21,7 @@ import TextField from "../../components/Form/TextField";
 
 const defaultValues = {
   first_name: "",
+  middle_name: "",
   last_name: "",
   contact_number: "",
   employee_number: "",
@@ -52,7 +54,7 @@ const ContractorForm = ({
 
   return (
     <Formik
-      initialValues={{ ...defaultValues, ...initialValues }}
+      initialValues={{ ...defaultValues, ...omitBy(initialValues, (v) => !v) }}
       validationSchema={Yup.object().shape({
         first_name: Yup.string().required("first name is required"),
         middle_name: Yup.string(),

@@ -15,16 +15,16 @@ const AttendanceTable = ({
     ...(showContractor
       ? [
           {
-            Header: "Contractor",
+            header: "Contractor",
             accessor: "contractor.full_name",
           },
         ]
       : []),
     {
-      Header: "Time in / Time out",
-      Cell: ({ row }) => {
-        const timeIn = parseJSON(row.original.time_in_at);
-        const timeOut = parseJSON(row.original.time_out_at);
+      header: "Time in / Time out",
+      cell: ({ row }) => {
+        const timeIn = parseJSON(row.time_in_at);
+        const timeOut = parseJSON(row.time_out_at);
         return (
           <Box>
             <Text color="gray.600" fontSize="sm">
@@ -38,23 +38,23 @@ const AttendanceTable = ({
       },
     },
     {
-      Header: "Regular",
+      header: "Regular",
       accessor: "regular_hours",
       collapse: true,
     },
-    { Header: "Overtime", accessor: "overtime_hours", collapse: true },
+    { header: "Overtime", accessor: "overtime_hours", collapse: true },
     ...(showActions
       ? [
           {
             id: "actions",
             collapse: true,
-            Header: () => null,
-            Cell: ({ row, data }) => {
+            header: () => null,
+            cell: ({ row, data }) => {
               return (
                 <Flex justify="flex-end">
                   <Button
                     as={Link}
-                    to={`/attendances/${row.original.id}`}
+                    to={`/attendances/${row.id}`}
                     variantColor="orange"
                     variant="link"
                     size="sm"
@@ -64,7 +64,7 @@ const AttendanceTable = ({
                   </Button>
                   <Button
                     as={Link}
-                    to={`/attendances/${row.original.id}/edit`}
+                    to={`/attendances/${row.id}/edit`}
                     variantColor="blue"
                     variant="link"
                     size="sm"

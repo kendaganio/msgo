@@ -1,4 +1,5 @@
 import axios from "axios";
+import qs from "qs";
 
 const fetchTokenFromStorage = () => localStorage.getItem("msgo_token");
 
@@ -14,7 +15,7 @@ export const fetchContractors = (params) => {
 };
 
 export const fetchCollection = (model, params) =>
-  Api.get(`/api/v1/${model}`, { params });
+  Api.get(`/api/v1/${model}?${qs.stringify(params)}`);
 
 export const fetchOne = (model, id, params = {}) => {
   return Api.get(`/api/v1/${model}/${id}`, { params });
