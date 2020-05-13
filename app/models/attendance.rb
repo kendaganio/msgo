@@ -1,24 +1,16 @@
 class Attendance < ApplicationRecord
-  belongs_to :contractor
-
   default_scope { order(time_in_at: :desc) }
 
-  def hours_worked
+  belongs_to :contractor
+
+  before_save :compute_hours
+
+  def compute_hours
     hrs = ((time_out_at - time_in_at) / 60 / 60).floor
     hrs = hrs - 1 if hrs > 8
-    hrs
-  end
+    self.raw_hours = hrs
+    self.overtime_hours = self.raw_hours < 8 ? 0 : self.raw_hours - 8
 
-  def overtime_hours
-    return 0.0 if hours_worked < 8
-    hours_worked - 8
-  end
-
-  def regular_hours
-    hours_worked - overtime_hours
-  end
-
-  def to_calendar_event
-    { title: "#{hours_worked} hrs.", date: time_in_at.to_date.to_s }
+    self.regular_hours = self.raw_hours - self.overtime_hours
   end
 end

@@ -2,18 +2,25 @@ class DatatableQuery
   DEFAULT_PAGE = 1
   DEFAULT_PER_PAGE = 20
 
-  attr_reader :relation, :order, :page, :per_page
+  attr_reader :relation, :order, :params, :page, :per_page, :filters
 
   def initialize(relation, params)
     @relation = relation
+    @params = params
     @page = params.fetch(:page, DEFAULT_PAGE)
     @per_page = params.fetch(:per_page, DEFAULT_PER_PAGE)
     @order = params.fetch(:order, { id: 'asc' })
+    @filters = params.fetch(:filters, {})
   end
 
   def call
-    @relation = orderer
-    @relation = paginator
+    relation = filterer
+    relation = orderer
+    relation = paginator
+  end
+
+  def filterer
+    @relation.ransack(filters).result
   end
 
   def orderer

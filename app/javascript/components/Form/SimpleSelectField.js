@@ -32,7 +32,6 @@ const SimpleSelectField = ({ label, name, ...props }) => {
                   borderWidth: 0,
                 }),
                 control: (provided, state) => {
-                  console.log(state);
                   return {
                     ...provided,
                     boxShadow: isInvalid

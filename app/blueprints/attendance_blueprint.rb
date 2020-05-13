@@ -3,7 +3,7 @@ class AttendanceBlueprint < Blueprinter::Base
 
   fields :time_in_at,
          :time_out_at,
-         :hours_worked,
+         :raw_hours,
          :regular_hours,
          :overtime_hours,
          :contractor_id

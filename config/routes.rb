@@ -12,7 +12,11 @@ Rails.application.routes.draw do
         member { post :attendances }
       end
       resources :attendances
-      resources :payrolls
+      resources :payrolls do
+        member { post :finalize }
+      end
+      resources :payouts
+      resources :payslips
     end
   end
 

@@ -3,8 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import { parseISO, format } from "date-fns";
 import { useQuery } from "react-query";
 
-import AttendanceTable from "../Attendance/AttendanceTable";
 import PageCrumbs from "../../components/Pagecrumbs";
+import CashAdvancePanel from "./CashAdvancePanel";
+import AttendancePanel from "./AttendancePanel";
+import TimesheetPanel from "./TimesheetPanel";
+import PayrollPanel from "./PayrollPanel";
 import { fetchOne } from "../../Api";
 import {
   Flex,
@@ -15,12 +18,19 @@ import {
   Text,
   Box,
   Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Tab,
 } from "@chakra-ui/core";
-import BulkAttendance from "./BulkAttendance";
 
 const Show = (props) => {
   const { id } = useParams();
-  const { status, data, error } = useQuery(["contractors", id], fetchOne);
+  const { status, data, refetch: refetchContractor, error } = useQuery(
+    ["contractors", id],
+    fetchOne
+  );
 
   if (status === "loading") {
     return <h1>Loading</h1>;
@@ -37,7 +47,6 @@ const Show = (props) => {
         align="center"
         borderWidth="1px"
         spacing="4"
-        shadow="sm"
         p="8"
         direction={{ base: "column", md: "row" }}
         justify={{ base: "center", md: "flex-start" }}
@@ -83,14 +92,38 @@ const Show = (props) => {
           <Button>Another Action</Button>
         </Stack>
       </Flex>
-      <BulkAttendance contractorId={id} />
-      <SimpleGrid columns={{ base: 1, md: 1 }} spacing="4" p="4">
-        <AttendanceTable
-          data={contractor.attendances}
-          showContractor={false}
-          showActions={true}
-        />
-      </SimpleGrid>
+      <Tabs defaultIndex={2}>
+        <TabList px="4" pt="1" bg="gray.50" shadow="sm">
+          <Tab>Personal Information</Tab>
+          <Tab>Attendance</Tab>
+          <Tab>Timesheet</Tab>
+          <Tab>Cash Advance</Tab>
+          <Tab>Payroll History</Tab>
+        </TabList>
+        <Box m="4">
+          <TabPanels>
+            <TabPanel>p</TabPanel>
+            <TabPanel>
+              <AttendancePanel />
+            </TabPanel>
+            <TabPanel>
+              <TimesheetPanel
+                refetchContractor={refetchContractor}
+                contractor={contractor}
+              />
+            </TabPanel>
+            <TabPanel>
+              <CashAdvancePanel
+                contractor={contractor}
+                refetchContractor={refetchContractor}
+              />
+            </TabPanel>
+            <TabPanel>
+              <PayrollPanel data={contractor.payslips} />
+            </TabPanel>
+          </TabPanels>
+        </Box>
+      </Tabs>
     </div>
   );
 };

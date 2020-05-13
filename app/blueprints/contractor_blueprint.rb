@@ -19,5 +19,7 @@ class ContractorBlueprint < Blueprinter::Base
 
   view :with_associations do
     association :attendances, blueprint: AttendanceBlueprint
+    association :payouts, blueprint: PayoutBlueprint
+    association :payslips, blueprint: PayslipBlueprint
   end
 end

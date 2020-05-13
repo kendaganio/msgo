@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
-import { Button, Box, Flex, Heading } from "@chakra-ui/core";
+import { Badge, Button, Box, Flex } from "@chakra-ui/core";
 
 import PageHeader from "../../components/PageHeader";
 import { fetchPayrolls } from "../../Api";
@@ -39,10 +39,20 @@ const List = (props) => {
             { id: "start_date", header: "From", accessor: "start_date" },
             { id: "end_date", header: "To", accessor: "end_date" },
             {
+              header: "Status",
+              cell: ({ row }) => (
+                <Badge
+                  mr="2"
+                  variantColor={row.status === "final" ? "green" : "orange"}
+                >
+                  {row.status}
+                </Badge>
+              ),
+            },
+            {
               id: "actions",
               header: () => null,
               cell: ({ row, ...props }) => {
-                console.log(props);
                 return (
                   <Flex justify="flex-end">
                     <Button

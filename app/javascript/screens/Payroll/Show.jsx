@@ -1,11 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
+import { format, parseISO } from "date-fns";
+import { Badge, Box, Button } from "@chakra-ui/core";
 
+import Api from "../../Api";
+import DraftTable from "./DraftTable";
+import FinalTable from "./FinalTable";
 import PageHeader from "../../components/PageHeader";
-import { Table } from "../../components/Table";
 import { fetchOne } from "../../Api";
-import { Box, Text } from "@chakra-ui/core";
 
 const Show = (props) => {
   const { id } = useParams();
@@ -16,74 +19,47 @@ const Show = (props) => {
   }
 
   const payroll = data.data;
-  console.log(payroll.payees);
+  const finalizePayroll = () => {
+    Api.post(`/api/v1/payrolls/${payroll.id}/finalize`)
+      .then((res) => console.log(res.data))
+      .catch((res) => console.log(res.data));
+  };
 
   return (
     <div>
-      <PageHeader title={payroll.name} />
+      <PageHeader
+        title={payroll.name}
+        actions={
+          payroll.status === "draft" ? (
+            <Button
+              variantColor="green"
+              leftIcon="check"
+              onClick={finalizePayroll}
+            >
+              Finalize Payroll
+            </Button>
+          ) : (
+            <Button variantColor="green" leftIcon="download">
+              Download CSV
+            </Button>
+          )
+        }
+      >
+        <Badge
+          mr="2"
+          variantColor={payroll.status === "final" ? "green" : "orange"}
+        >
+          {payroll.status}
+        </Badge>
+        {format(parseISO(payroll.start_date), "MMMM d")} -{" "}
+        {format(parseISO(payroll.end_date), "MMMM d, yyyy")}
+      </PageHeader>
       <Box p="4">
-        <Table
-          columns={[
-            {
-              Header: "Contractor",
-              Cell: ({ row }) =>
-                `${row.original.first_name} ${row.original.last_name}`,
-            },
-            {
-              collapse: true,
-              Header: "Days Worked",
-              accessor: "days_worked",
-            },
-            {
-              collapse: true,
-              Header: "Hours",
-              Cell: ({ row }) => (
-                <Text>
-                  {row.original.regular_hours} / {row.original.overtime_hours}
-                </Text>
-              ),
-            },
-            {
-              collapse: true,
-              Header: "Pay (REG)",
-              Cell: ({ row }) =>
-                row.original.regular_hours * row.original.hourly_rate,
-            },
-            {
-              collapse: true,
-              Header: "Pay (OT)",
-              Cell: ({ row }) =>
-                row.original.overtime_hours * (row.original.hourly_rate * 1.25),
-            },
-            {
-              collapse: true,
-              Header: "Holiday",
-              Cell: ({ row }) => "??",
-            },
-            {
-              collapse: true,
-              Header: "GROSS Pay",
-              Cell: ({ row }) => (
-                <Text color="green.600">
-                  {row.original.regular_hours * row.original.hourly_rate +
-                    row.original.overtime_hours *
-                      (row.original.hourly_rate * 1.25)}
-                </Text>
-              ),
-            },
-            {
-              collapse: true,
-              Header: "Cash Advance",
-              Cell: ({ row }) => <Text color="red.600">TEKA</Text>,
-            },
-            {
-              collapse: true,
-              Header: "Net Pay",
-              Cell: ({ row }) => <Text color="red.600">WALA PA</Text>,
-            },
-          ]}
-          data={Object.values(payroll.payees)}
-        />
+        {payroll.status === "draft" ? (
+          <DraftTable data={payroll.payees} />
+        ) : (
+          <FinalTable data={payroll.payees} />
+        )}
       </Box>
     </div>
   );

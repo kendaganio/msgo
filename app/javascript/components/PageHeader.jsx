@@ -1,7 +1,12 @@
 import React from "react";
 import { Box, Heading, Flex } from "@chakra-ui/core";
 
-const PageHeader = ({ title, actions = undefined, ...props }) => {
+const PageHeader = ({
+  title,
+  actions = undefined,
+  children = null,
+  ...props
+}) => {
   return (
     <Flex
       p="4"
@@ -16,6 +21,7 @@ const PageHeader = ({ title, actions = undefined, ...props }) => {
         <Heading as="h1" size="lg" color="gray.700">
           {title}
         </Heading>
+        {children && children}
       </Box>
       <Box>{actions}</Box>
     </Flex>

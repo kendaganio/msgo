@@ -12,13 +12,7 @@ const List = (props) => {
   const [currentPage, setPage] = useState(1);
   const [sort, setSort] = useState({});
 
-  const {
-    status,
-    resolvedData,
-    error,
-    refetch,
-    isFetching,
-  } = usePaginatedQuery(
+  const { status, resolvedData, error, isFetching } = usePaginatedQuery(
     ["contractors", { page: currentPage, order: sort }],
     fetchCollection,
     {
@@ -26,9 +20,11 @@ const List = (props) => {
     }
   );
 
-  console.log(resolvedData);
   if (status === "loading") {
     return <h1>Loading</h1>;
+  }
+  if (status === "error") {
+    return <h1>{error}</h1>;
   }
 
   return (

@@ -5,10 +5,20 @@ class Contractor < ApplicationRecord
   validates :hourly_rate, presence: true
 
   has_many :attendances
+  has_many :payslips
+  has_many :payouts
 
   enum status: %i[active inactive ulol]
 
   before_create :generate_employee_number
+
+  def attendances_in_range(start_date, end_date)
+    attendances.where(
+      'time_in_at >= ? AND time_out_at <= ?',
+      start_date,
+      end_date
+    )
+  end
 
   def generate_employee_number
     current_year = Time.now.year
@@ -30,8 +40,12 @@ class Contractor < ApplicationRecord
     [first_name, last_name].join(' ')
   end
 
-  def attendance_events
-    attendances.map(&:to_calendar_event)
+  def total_ca
+    Payout.where(cash_advance: true, contractor_id: self.id).pluck(
+      'sum(amount)'
+    )[
+      0
+    ].to_f
   end
 
   def image_url

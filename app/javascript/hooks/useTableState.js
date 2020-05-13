@@ -2,7 +2,6 @@ import React, { useReducer } from "react";
 import get from "lodash-es/get";
 
 const initialState = {
-  isLoading: false,
   currentPage: 1,
   search: {},
   sort: {},
@@ -13,24 +12,16 @@ function parameterize(s) {
 }
 
 const actions = {
-  INIT_SORT: 0,
   TOGGLE_SORT: 1,
+  SET_PAGE: 2,
 };
 
 function tableStateReducer(state, action) {
   const sorts = ["default", "asc", "desc"];
 
   switch (action.type) {
-    case actions.INIT_SORT:
-      return {
-        ...state,
-        sort: {
-          ...state.sort,
-          [action.field]: "default",
-        },
-      };
     case actions.TOGGLE_SORT:
-      const currentSort = state.sort[action.field];
+      const currentSort = state.sort[action.field] || "default";
       const nextSort =
         currentSort === "default"
           ? "asc"
@@ -40,7 +31,7 @@ function tableStateReducer(state, action) {
       return {
         ...state,
         sort: {
-          ...state.sort,
+          // ...state.sort, (for multisort, add logic later)
           [action.field]: nextSort,
         },
       };
@@ -75,9 +66,11 @@ function initColumns(col, state, dispatch) {
     id = parameterize(header);
   }
 
+  /*
   if (sortable && typeof state.sort[id] === "undefined") {
     dispatch({ type: actions.INIT_SORT, field: id });
   }
+  */
 
   return {
     ...col,
@@ -132,9 +125,13 @@ function generateCell(col, row, y, x) {
 const useTableState = ({ columns: rawColumns, data, ...props }) => {
   const [state, dispatch] = useReducer(tableStateReducer, initialState);
 
-  console.log(state.sort);
-
   const columns = rawColumns.map((c) => initColumns(c, state, dispatch));
+  const headers = columns.map((c) => generateColumn(c, state, dispatch));
+
+  const rows = data.map((row, y) => ({
+    cells: columns.map((column, x) => generateCell(column, row, y, x)),
+    getRowProps: () => ({ role: "row", key: `row.${y}` }),
+  }));
 
   const getTableProps = () => ({
     role: "grid",
@@ -143,13 +140,6 @@ const useTableState = ({ columns: rawColumns, data, ...props }) => {
   const getTableBodyProps = () => ({
     role: "rowgroup",
   });
-
-  const headers = columns.map((c) => generateColumn(c, state, dispatch));
-
-  const rows = data.map((row, y) => ({
-    cells: columns.map((column, x) => generateCell(column, row, y, x)),
-    getRowProps: () => ({ role: "row", key: `row.${y}` }),
-  }));
 
   return {
     getTableProps,

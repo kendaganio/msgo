@@ -8,6 +8,7 @@ import Unauntheticated from "./Unauthenticated";
 import Attendance from "./screens/Attendance";
 import Contractors from "./screens/Contractor";
 import Payroll from "./screens/Payroll";
+import Payslip from "./screens/Payslip";
 import { useUser } from "./contexts/UserContext";
 
 const App = (props) => {
@@ -27,6 +28,9 @@ const App = (props) => {
             </Route>
             <Route path="/payrolls">
               <Payroll />
+            </Route>
+            <Route path="/payslips">
+              <Payslip />
             </Route>
             <Route path="/">Dash</Route>
           </Switch>

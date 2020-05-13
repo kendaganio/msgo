@@ -1,12 +1,8 @@
 class PayrollBlueprint < Blueprinter::Base
   identifier :id
-  fields :name, :start_date, :end_date, :payees
+  fields :name, :start_date, :end_date, :status
 
-  view :with_attendances do
-    field :attendances do |payroll, options|
-      payroll.recorded_attendances.map do |a|
-        AttendanceBlueprint.render_as_hash(a)
-      end
-    end
+  view :with_payees do
+    field :payees
   end
 end

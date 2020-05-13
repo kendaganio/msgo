@@ -1,4 +1,6 @@
 class Api::V1::AttendancesController < ApplicationController
+  before_action :set_attendance, only: %i[show update]
+
   def index
     @attendances = Attendance.joins(:contractor).all
     if params[:contractor_id]
@@ -21,7 +23,6 @@ class Api::V1::AttendancesController < ApplicationController
   end
 
   def update
-    @attendance = Attendance.find(params[:id])
     @attendance.assign_attributes(attendance_params)
 
     if @attendance.save
@@ -33,12 +34,15 @@ class Api::V1::AttendancesController < ApplicationController
   end
 
   def show
-    @attendance = Attendance.find(params[:id])
     render json:
              AttendanceBlueprint.render(@attendance, view: :with_associations)
   end
 
   private
+
+  def set_attendance
+    @attendance = Attendance.find(params[:id])
+  end
 
   def attendance_params
     params.require(:attendance).permit(

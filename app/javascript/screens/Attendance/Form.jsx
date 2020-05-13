@@ -1,4 +1,5 @@
 import React from "react";
+import { set } from "date-fns";
 import * as Yup from "yup";
 import { useQuery } from "react-query";
 import { Formik, Form } from "formik";
@@ -22,8 +23,18 @@ import { fetchContractors } from "../../Api";
 const AttendanceForm = ({
   initialValues = {
     contractor_id: undefined,
-    time_in_at: new Date(),
-    time_out_at: new Date(),
+    time_in_at: set(new Date(), {
+      hours: 7,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    }),
+    time_out_at: set(new Date(), {
+      hours: 16,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    }),
   },
   onSubmit = (values, actions) => console.log(values),
   heading = "New Attendance Record",

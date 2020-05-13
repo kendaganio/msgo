@@ -1,11 +1,12 @@
 class Api::V1::PayrollsController < ApiController
+  before_action :set_payroll, only: %i[show finalize]
+
   def index
     render json: PayrollBlueprint.render(Payroll.all)
   end
 
   def show
-    @payroll = Payroll.find(params[:id])
-    render json: PayrollBlueprint.render(@payroll)
+    render json: PayrollBlueprint.render(@payroll, view: :with_payees)
   end
 
   def create
@@ -19,7 +20,19 @@ class Api::V1::PayrollsController < ApiController
     end
   end
 
+  def finalize
+    @payroll.payees.each do |payee|
+      Payroll::GeneratePayslip.call(@payroll, payee)
+    end
+
+    @payroll.update(status: 'final')
+  end
+
   private
+
+  def set_payroll
+    @payroll = Payroll.find(params[:id])
+  end
 
   def payroll_params
     params.require(:payroll).permit(:name, :start_date, :end_date)

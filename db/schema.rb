@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_11_021500) do
+ActiveRecord::Schema.define(version: 2020_05_12_142250) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,9 @@ ActiveRecord::Schema.define(version: 2020_05_11_021500) do
     t.bigint "contractor_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "raw_hours"
+    t.float "regular_hours"
+    t.float "overtime_hours"
     t.index ["contractor_id"], name: "index_attendances_on_contractor_id"
   end
 
@@ -135,6 +138,25 @@ ActiveRecord::Schema.define(version: 2020_05_11_021500) do
     t.date "end_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status", default: "draft"
+  end
+
+  create_table "payslips", force: :cascade do |t|
+    t.string "status", default: "new"
+    t.decimal "net_pay", precision: 8, scale: 2
+    t.decimal "gross_pay", precision: 8, scale: 2
+    t.decimal "net_deductions", precision: 8, scale: 2
+    t.float "hourly_rate"
+    t.float "regular_hours"
+    t.float "overtime_hours"
+    t.string "pay_to"
+    t.bigint "contractor_id"
+    t.bigint "payroll_id"
+    t.jsonb "metadata"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["contractor_id"], name: "index_payslips_on_contractor_id"
+    t.index ["payroll_id"], name: "index_payslips_on_payroll_id"
   end
 
   create_table "users", force: :cascade do |t|

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button, Box, Flex, Text } from "@chakra-ui/core";
-import { format, parseJSON } from "date-fns";
+import { format, parseISO } from "date-fns";
 
 import { Table } from "../../components/Table";
 
@@ -21,17 +21,25 @@ const AttendanceTable = ({
         ]
       : []),
     {
+      header: "Date",
+      cell: ({ row }) => (
+        <>
+          <Text>{format(parseISO(row.time_in_at), "MMMM d, yyyy")}</Text>
+          <Text color="gray.600" fontSize="sm">
+            {format(parseISO(row.time_in_at), "iiii")}
+          </Text>
+        </>
+      ),
+    },
+    {
       header: "Time in / Time out",
       cell: ({ row }) => {
-        const timeIn = parseJSON(row.time_in_at);
-        const timeOut = parseJSON(row.time_out_at);
+        const timeIn = parseISO(row.time_in_at);
+        const timeOut = parseISO(row.time_out_at);
         return (
           <Box>
             <Text color="gray.600" fontSize="sm">
-              {format(timeIn, "MMM d / hh:mm a")}
-            </Text>
-            <Text color="gray.600" fontSize="sm">
-              {format(timeOut, "MMM d / hh:mm a")}
+              {format(timeIn, "hh:mm a")} - {format(timeOut, "hh:mm a")}
             </Text>
           </Box>
         );
@@ -62,15 +70,17 @@ const AttendanceTable = ({
                   >
                     View
                   </Button>
-                  <Button
-                    as={Link}
-                    to={`/attendances/${row.id}/edit`}
-                    variantColor="blue"
-                    variant="link"
-                    size="sm"
-                  >
-                    Edit
-                  </Button>
+                  {!row.payslip_id && (
+                    <Button
+                      as={Link}
+                      to={`/attendances/${row.id}/edit`}
+                      variantColor="blue"
+                      variant="link"
+                      size="sm"
+                    >
+                      Edit
+                    </Button>
+                  )}
                 </Flex>
               );
             },

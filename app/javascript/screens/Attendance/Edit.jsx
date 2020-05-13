@@ -12,7 +12,9 @@ import Api, { fetchOne } from "../../Api";
 const Edit = (props) => {
   const { id } = useParams();
 
-  const { status, data, error } = useQuery(["attendances", id], fetchOne);
+  const { status, data, error } = useQuery(["attendances", id], fetchOne, {
+    cacheTime: 100,
+  });
 
   if (status === "loading") {
     return "loading";

@@ -91,14 +91,16 @@ const Table = ({
 
   return (
     <>
-      <SimpleGrid columns={{ base: 1, md: 3 }}>
-        <InputGroup my="2">
-          <InputLeftElement
-            children={<Icon name="search" color="gray.300" />}
-          />
-          <Input type="text" placeholder="Search..." />
-        </InputGroup>
-      </SimpleGrid>
+      {false && (
+        <SimpleGrid columns={{ base: 1, md: 3 }}>
+          <InputGroup my="2">
+            <InputLeftElement
+              children={<Icon name="search" color="gray.300" />}
+            />
+            <Input type="text" placeholder="Search..." />
+          </InputGroup>
+        </SimpleGrid>
+      )}
       <Box overflowY="auto">
         <Box
           rounded="lg"
@@ -108,19 +110,31 @@ const Table = ({
           borderWidth="1px"
           borderColor="gray.200"
         >
-          <Box as="table" minW="full" {...props} {...getTableProps()}>
+          <Box
+            as="table"
+            minW="full"
+            {...props}
+            {...getTableProps()}
+            opacity={isLoading ? "0.5" : "1"}
+            transition="opacity 400ms ease-in-out"
+          >
             <Thead>
               <Tr>
                 {headers.map((column) => {
                   return (
                     <Th {...column.getHeaderProps()}>
                       {column.render()}{" "}
-                      {column.sortable &&
-                        (column.sortDirection === "asc"
-                          ? "up"
-                          : column.sortDirection === "desc"
-                          ? "down"
-                          : "")}
+                      {column.sortable && (
+                        <>
+                          {column.sortDirection === "asc" ? (
+                            <Icon name="arrow-up" />
+                          ) : column.sortDirection === "desc" ? (
+                            <Icon name="arrow-down" />
+                          ) : (
+                            <Icon name="up-down" />
+                          )}
+                        </>
+                      )}
                     </Th>
                   );
                 })}
