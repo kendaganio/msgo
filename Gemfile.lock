@@ -95,6 +95,10 @@ GEM
       railties (>= 5)
     doorkeeper-jwt (0.4.0)
       jwt (~> 2.1)
+    dotenv (2.7.5)
+    dotenv-rails (2.7.5)
+      dotenv (= 2.7.5)
+      railties (>= 3.2, < 6.1)
     erubi (1.9.0)
     factory_bot (5.2.0)
       activesupport (>= 4.2.0)
@@ -318,6 +322,7 @@ DEPENDENCIES
   devise
   doorkeeper
   doorkeeper-jwt
+  dotenv-rails
   factory_bot_rails
   faker
   guard-rspec

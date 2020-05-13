@@ -31,6 +31,7 @@ group :development, :test do
   gem 'faker'
   gem 'simplecov'
   gem 'pry-rails'
+  gem 'dotenv-rails'
 end
 
 group :development do
