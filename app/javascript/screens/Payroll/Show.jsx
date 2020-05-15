@@ -26,6 +26,12 @@ const Show = (props) => {
       .catch((res) => console.log(res.data));
   };
 
+  const downloadCsv = () => {
+    Api.get(`/api/v1/payrolls/${payroll.id}/csv`)
+      .then((res) => console.log(res.data))
+      .catch((res) => console.log(res.data));
+  };
+
   return (
     <div>
       <PageHeader
@@ -40,7 +46,11 @@ const Show = (props) => {
               Finalize Payroll
             </Button>
           ) : (
-            <Button variantColor="green" leftIcon="download">
+            <Button
+              variantColor="green"
+              leftIcon="download"
+              onClick={downloadCsv}
+            >
               Download CSV
             </Button>
           )

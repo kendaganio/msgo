@@ -1,5 +1,5 @@
 class Api::V1::PayrollsController < ApiController
-  before_action :set_payroll, only: %i[show finalize]
+  before_action :set_payroll, only: %i[show finalize csv]
 
   def index
     render json: PayrollBlueprint.render(Payroll.all)
@@ -26,6 +26,17 @@ class Api::V1::PayrollsController < ApiController
     end
 
     @payroll.update(status: 'final')
+  end
+
+  def csv
+    raw =
+      CSV.generate(headers: true) do |csv|
+        csv << %w[name hourly_rate]
+        @payroll.payslips.each do |p|
+          csv << [p.contractor.full_name, p.hourly_rate]
+        end
+      end
+    send_data raw, filename: 'derp.csv'
   end
 
   private

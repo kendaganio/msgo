@@ -18,8 +18,8 @@ const DraftTable = ({ data, ...props }) => {
         },
         {
           collapse: true,
-          header: "Hourly Rate",
-          accessor: "hourly_rate",
+          header: "Daily Rate",
+          cell: ({ row }) => row.hourly_rate * 8,
         },
         {
           collapse: true,

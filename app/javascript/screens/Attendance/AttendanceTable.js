@@ -60,16 +60,18 @@ const AttendanceTable = ({
             cell: ({ row, data }) => {
               return (
                 <Flex justify="flex-end">
-                  <Button
-                    as={Link}
-                    to={`/attendances/${row.id}`}
-                    variantColor="orange"
-                    variant="link"
-                    size="sm"
-                    mr="4"
-                  >
-                    View
-                  </Button>
+                  {false && (
+                    <Button
+                      as={Link}
+                      to={`/attendances/${row.id}`}
+                      variantColor="orange"
+                      variant="link"
+                      size="sm"
+                      mr="4"
+                    >
+                      View
+                    </Button>
+                  )}
                   {!row.payslip_id && (
                     <Button
                       as={Link}

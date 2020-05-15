@@ -1,5 +1,6 @@
 import React from "react";
 import * as Yup from "yup";
+import { useHistory } from "react-router-dom";
 import { Formik, Form } from "formik";
 import { isAfter } from "date-fns";
 import {
@@ -20,6 +21,7 @@ import PageCrumbs from "../../components/Pagecrumbs";
 import Api from "../../Api";
 
 const New = (props) => {
+  const history = useHistory();
   return (
     <div>
       <PageCrumbs />
@@ -54,7 +56,7 @@ const New = (props) => {
             })
               .then((res) => {
                 actions.setSubmitting(false);
-                actions.setStatus("saved");
+                history.push("/payrolls/" + res.data.id);
               })
               .catch((res) => {
                 console.log(res.data);
