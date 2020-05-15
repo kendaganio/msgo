@@ -32,7 +32,7 @@ const App = (props) => {
             <Route path="/payslips">
               <Payslip />
             </Route>
-            <Route path="/">Dash</Route>
+            <Route path="/"></Route>
           </Switch>
           {false && <Footer />}
         </Router>

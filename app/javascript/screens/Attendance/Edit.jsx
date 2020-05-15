@@ -1,7 +1,7 @@
 import React from "react";
 import * as Yup from "yup";
 import { parseISO } from "date-fns";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { Box } from "@chakra-ui/core";
 
@@ -10,6 +10,7 @@ import Form from "./Form";
 import Api, { fetchOne } from "../../Api";
 
 const Edit = (props) => {
+  const history = useHistory();
   const { id } = useParams();
 
   const { status, data, error } = useQuery(["attendances", id], fetchOne, {
@@ -35,6 +36,7 @@ const Edit = (props) => {
               .then((res) => {
                 actions.setSubmitting(false);
                 actions.setStatus("saved");
+                history.goBack();
               })
               .catch((res) => {
                 console.log(res.data);

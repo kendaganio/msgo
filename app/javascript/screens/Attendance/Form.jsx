@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { set } from "date-fns";
 import * as Yup from "yup";
 import { useQuery } from "react-query";
@@ -73,15 +73,6 @@ const AttendanceForm = ({
       {(formikProps) => {
         return (
           <Form>
-            {formikProps.status === "saved" && (
-              <Alert status="success" rounded="md" mb="4" shadow="sm">
-                <AlertIcon />
-                <AlertTitle mr="1">You did it!</AlertTitle>
-                <AlertDescription>
-                  A new attendance record has been created.
-                </AlertDescription>
-              </Alert>
-            )}
             <Box bg="gray.50" p="4" borderWidth="1px" rounded="md" shadow="md">
               <Heading as="h2" size="lg">
                 {heading}

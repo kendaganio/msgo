@@ -5,6 +5,7 @@ import { format, parseISO } from "date-fns";
 import { Badge, Box, Button } from "@chakra-ui/core";
 
 import Api from "../../Api";
+import FullPageLoader from "../../components/FullPageLoader";
 import DraftTable from "./DraftTable";
 import FinalTable from "./FinalTable";
 import PageHeader from "../../components/PageHeader";
@@ -15,7 +16,7 @@ const Show = (props) => {
   const { status, data, error } = useQuery(["payrolls", id], fetchOne);
 
   if (status === "loading") {
-    return <h1>Loading</h1>;
+    return <FullPageLoader />;
   }
 
   const payroll = data.data;

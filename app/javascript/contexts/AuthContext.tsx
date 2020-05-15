@@ -1,7 +1,9 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import axios from "axios";
 
-const AuthContext = createContext();
+import FullPageLoader from "../components/FullPageLoader";
+
+const AuthContext = createContext({});
 
 function AuthProvider(props) {
   const [data, setData] = useState({});
@@ -23,7 +25,7 @@ function AuthProvider(props) {
           user: res.data,
         }));
       })
-      .catch((res) => {
+      .catch(() => {
         setLoading(false);
         //localStorage.removeItem("msgo_token");
         //setData({});
@@ -40,10 +42,10 @@ function AuthProvider(props) {
   }, []);
 
   if (isLoading) {
-    return "loading";
+    return <FullPageLoader />;
   }
 
-  const login = (email, password) => {
+  const login = (email: string, password: string) => {
     axios
       .post("/oauth/token", {
         grant_type: "password",

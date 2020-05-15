@@ -5,10 +5,10 @@ import { Button, Box } from "@chakra-ui/core";
 
 import PageHeader from "../../components/PageHeader";
 import AttendanceTable from "./AttendanceTable";
-import { fetchAttendances } from "../../Api";
+import { fetchCollection } from "../../Api";
 
 const List = (props) => {
-  const { status, data, error } = useQuery("attendances", fetchAttendances());
+  const { status, data, error } = useQuery(["attendances"], fetchCollection);
 
   if (status === "loading") {
     return <h1>Loading</h1>;

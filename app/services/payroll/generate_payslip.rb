@@ -31,7 +31,8 @@ class Payroll::GeneratePayslip
       contractor.payouts.create(
         amount: payslip.net_deductions,
         paid_at: payroll.end_date,
-        notes: "CA Payment from Payslip #{payslip.id}"
+        notes: "CA Payment from Payslip #{payslip.id}",
+        cash_advance: false
       )
     end
   end
@@ -45,8 +46,7 @@ class Payroll::GeneratePayslip
     {
       gross_pay: gross_pay,
       net_pay: gross_pay - net_deductions,
-      net_deductions: net_deductions,
-      cash_advance: false
+      net_deductions: net_deductions
     }
   end
 
