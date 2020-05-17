@@ -59,14 +59,14 @@ const ContractorForm = ({
         first_name: Yup.string().required("first name is required"),
         middle_name: Yup.string(),
         last_name: Yup.string().required("last name is required"),
-        contact_number: Yup.string().required("contact number is required"),
-        birthday: Yup.date().required("birthday is required"),
+        contact_number: Yup.string(),
+        birthday: Yup.date(),
         employee_number: Yup.string(),
-        address: Yup.string().required("address is required"),
+        address: Yup.string(),
 
-        hire_date: Yup.date().required("start date is required"),
-        status: Yup.string().required("status is required"),
-        job_title: Yup.string().required("job title is required"),
+        hire_date: Yup.date(),
+        status: Yup.string(),
+        job_title: Yup.string(),
         hourly_rate: Yup.number(),
         daily_rate: Yup.number().required("daily rate is required"),
 
@@ -75,15 +75,9 @@ const ContractorForm = ({
         philhealth: Yup.string(),
         pagibig: Yup.string(),
 
-        emergency_contact: Yup.string().required(
-          "emergency contact is required"
-        ),
-        emergency_contact_relation: Yup.string().required(
-          "this field is required"
-        ),
-        emergency_contact_number: Yup.string().required(
-          "this field is required"
-        ),
+        emergency_contact: Yup.string(),
+        emergency_contact_relation: Yup.string(),
+        emergency_contact_number: Yup.string(),
       })}
       onSubmit={onSubmit}
     >
