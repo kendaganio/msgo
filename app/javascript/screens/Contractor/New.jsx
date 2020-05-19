@@ -17,10 +17,15 @@ const New = (props) => {
                 ...values,
                 hourly_rate: values.daily_rate / 8,
               },
-            }).then((res) => {
-              actions.setSubmitting(false);
-              actions.setStatus({ redirect: `/contractors/${res.data.id}` });
-            });
+            })
+              .then((res) => {
+                actions.setSubmitting(false);
+                actions.setStatus({ redirect: `/contractors/${res.data.id}` });
+              })
+              .catch((res) => {
+                actions.setSubmitting(false);
+                actions.setErrors({ ...res.response.data.errors });
+              });
           }}
         />
       </Box>

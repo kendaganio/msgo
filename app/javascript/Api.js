@@ -9,6 +9,7 @@ const getAxiosInstance = () => {
       Authorization: `Bearer ${fetchTokenFromStorage()}`,
       "Content-Type": "application/json",
     },
+    paramsSerializer: (params) => qs.stringify(params),
   });
 };
 
@@ -17,7 +18,7 @@ export const fetchContractors = () => {
 };
 
 export const fetchCollection = (model, params) =>
-  getAxiosInstance().get(`/api/v1/${model}?${qs.stringify(params)}`);
+  getAxiosInstance().get(`/api/v1/${model}`, { params });
 
 export const fetchOne = (model, id, params = {}) => {
   return getAxiosInstance().get(`/api/v1/${model}/${id}`, { params });

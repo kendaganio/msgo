@@ -66,7 +66,7 @@ const ContractorForm = ({
 
         hire_date: Yup.date(),
         status: Yup.string(),
-        job_title: Yup.string(),
+        job_title: Yup.string().required("job title is required"),
         hourly_rate: Yup.number(),
         daily_rate: Yup.number().required("daily rate is required"),
 
