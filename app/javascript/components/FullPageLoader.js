@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Spinner, Flex } from "@chakra-ui/core";
+import { Spinner, Flex } from "@chakra-ui/core";
 
 const FullPageLoader = (props) => {
   return (

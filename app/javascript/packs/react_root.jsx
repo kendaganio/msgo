@@ -21,14 +21,14 @@ const customTheme = {
 
 document.addEventListener("DOMContentLoaded", () => {
   ReactDOM.render(
-    <AuthProvider>
-      <UserProvider>
-        <ThemeProvider theme={customTheme}>
-          <CSSReset />
+    <ThemeProvider theme={customTheme}>
+      <CSSReset />
+      <AuthProvider>
+        <UserProvider>
           <App />
-        </ThemeProvider>
-      </UserProvider>
-    </AuthProvider>,
+        </UserProvider>
+      </AuthProvider>
+    </ThemeProvider>,
     document.getElementById("app-root")
   );
 });

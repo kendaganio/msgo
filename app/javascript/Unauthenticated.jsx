@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "./contexts/AuthContext";
 import {
+  Alert,
   Flex,
   Box,
   Heading,
@@ -9,12 +10,14 @@ import {
   FormLabel,
   Input,
   Button,
+  AlertIcon,
+  AlertDescription,
 } from "@chakra-ui/core";
 
 const Unauthenticated = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { data, login, logout } = useAuth();
+  const { login, status, error, logout } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +37,13 @@ const Unauthenticated = (props) => {
         >
           <Heading as="h1">Sign in</Heading>
           <Divider my="4" />
-          <FormControl>
+          {status === "error" && (
+            <Alert status="error" rounded="md" mb="2">
+              <AlertIcon />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          <FormControl isInvalid={status === "error"}>
             <FormLabel>Email</FormLabel>
             <Input
               type="email"
@@ -43,7 +52,7 @@ const Unauthenticated = (props) => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </FormControl>
-          <FormControl mt="2">
+          <FormControl mt="2" isInvalid={status === "error"}>
             <FormLabel>Password</FormLabel>
             <Input
               type="password"

@@ -6,8 +6,11 @@ import FullPageLoader from "../components/FullPageLoader";
 const AuthContext = createContext({});
 
 function AuthProvider(props) {
-  const [data, setData] = useState({});
-  const [isLoading, setLoading] = useState(true);
+  const [authState, setAuthState] = useState({
+    status: "loading",
+    error: null,
+    data: {},
+  });
 
   function fetchUser(token) {
     axios
@@ -19,14 +22,20 @@ function AuthProvider(props) {
       })
       .then((res) => {
         localStorage.setItem("msgo_token", token);
-        setLoading(false);
-        setData((data) => ({
-          ...data,
-          user: res.data,
+        setAuthState((state) => ({
+          ...state,
+          status: "done",
+          data: {
+            user: res.data,
+          },
         }));
       })
       .catch(() => {
-        setLoading(false);
+        setAuthState((state) => ({
+          ...state,
+          status: "error",
+          data: {},
+        }));
         //localStorage.removeItem("msgo_token");
         //setData({});
       });
@@ -37,11 +46,15 @@ function AuthProvider(props) {
     if (cachedToken) {
       fetchUser(cachedToken);
     } else {
-      setLoading(false);
+      setAuthState((state) => ({
+        ...state,
+        status: "done",
+        data: {},
+      }));
     }
   }, []);
 
-  if (isLoading) {
+  if (authState.status === "loading") {
     return <FullPageLoader />;
   }
 
@@ -55,18 +68,27 @@ function AuthProvider(props) {
       .then((res) => {
         fetchUser(res.data.access_token);
       })
-      .catch((res) => console.log(res));
+      .catch((res) =>
+        setAuthState((state) => ({
+          ...state,
+          status: "error",
+          error: "Invalid email and/or password",
+        }))
+      );
   };
 
   const register = () => {}; // register the user
   const logout = () => {
     localStorage.removeItem("msgo_token");
-    setData({});
+    setAuthState((state) => ({
+      ...state,
+      data: {},
+    }));
   }; // clear the token in localStorage
 
   return (
     <AuthContext.Provider
-      value={{ data, login, register, logout }}
+      value={{ login, register, logout, ...authState }}
       {...props}
     />
   );
