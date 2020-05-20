@@ -1,8 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Heading, Flex, Text, Button, PseudoBox } from "@chakra-ui/core";
+import {
+  Box,
+  Heading,
+  Flex,
+  Text,
+  Button,
+  PseudoBox,
+  Image,
+} from "@chakra-ui/core";
 import { useUser } from "../contexts/UserContext";
 import { useAuth } from "../contexts/AuthContext";
+
+import logo from "../images/msgo-logo-white.svg";
 
 const MenuItems = ({ children, ...props }) => (
   <PseudoBox
@@ -10,14 +20,16 @@ const MenuItems = ({ children, ...props }) => (
     mt={{ base: 0, md: 0 }}
     d="block"
     py="2"
-    px="4"
+    px={{ base: 1, md: 4 }}
+    mt={{ base: 1, md: 0 }}
+    textAlign={{ base: "center", md: "left" }}
     rounded="md"
     fontFamily="heading"
     fontWeight="500"
     fontSize="sm"
     _hover={{
       bg: "blue.600",
-      color: "white",
+      color: "blue.50",
     }}
     {...props}
   >
@@ -42,17 +54,18 @@ const Header = (props) => {
       px={{ base: 6, md: 6 }}
       bg="blue.700"
       color="gray.100"
+      borderBottomWidth="1px"
       {...props}
     >
       <Flex align="center" mr={5}>
         <Heading as={Link} size="md" to="/">
-          MSGO
+          <Image src={logo} maxH="25px" />
         </Heading>
       </Flex>
 
       <Box display={{ sm: "block", md: "none" }} onClick={handleToggle}>
         <svg
-          fill="white"
+          fill="currentColor"
           width="12px"
           viewBox="0 0 20 20"
           xmlns="http://www.w3.org/2000/svg"
